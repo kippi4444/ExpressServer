@@ -16,20 +16,20 @@ class Services {
     async add (body) {
         const user = new User(body)
         this.users.push(user);
-        save();
-        return {user}  
+        this.save();
+        return "ok"
     }
     
     async update (req){
-        let upd = this.users.splice(req.params.id, 1, req.body)
-        save();
-        return await upd
+        this.users.splice(req.params.id, 1, req.body)
+        this.save();
+        return "UPDATED"
     }
     
     async del(id){
         let kick = this.users.splice(id, 1);
-        save();
-        return await kick
+        this.save();
+        return `User ${JSON.stringify(kick)} was delited!`
     }
     
     async getUser (id) {
