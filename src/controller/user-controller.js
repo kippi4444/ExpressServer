@@ -28,7 +28,6 @@ class UserController {
 
     getUser = async (req, res) => {
         try {
-            console.log(req)
             const result = await service.getUser(req.params.id)
             res.send(result)
         } catch (e) {

@@ -14,16 +14,18 @@ class Services {
     }
     
     async add (body) {
-        const user = new User(body)
-        this.users.push(user);
+        // const user = new User(body)
+        this.users.push(body);
         this.save();
         return "ok"
     }
     
     async update (req){
-        this.users.splice(req.params.id, 1, req.body)
-        this.save();
-        return "UPDATED"
+        if(this.users[req.params.id]){
+            this.users.splice(req.params.id, 1, req.body)
+            this.save();
+            return "UPDATED"
+        }else throw new Error ("ERROR: USER NOT FOUND");
     }
     
     async del(id){
@@ -35,7 +37,7 @@ class Services {
     async getUser (id) {
         if(this.users[id]) {
             return await this.users[id];
-        }else  return "ERROR: USER NOT FOUND";
+        }else throw new Error ("ERROR: USER NOT FOUND");
        
     }
     
