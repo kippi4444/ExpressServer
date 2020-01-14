@@ -19,7 +19,7 @@ class UserController {
     }
     updateUser = async (req, res) => {
         try {
-            const result = await service.update(req.body)
+            const result = await service.update(req)
             res.status(201).send(result)
         } catch (e) {
             res.status(400).send({error: e.message})
