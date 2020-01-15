@@ -38,7 +38,7 @@ class UserController {
 
     getAllUsers = async (req, res) => {           
         try {
-            const result = await service.getAllUsers(req.body)
+            const result = await service.getAllUsers()
             res.send(result)
         } catch (e) {
             res.status(400).send({error:e.message})

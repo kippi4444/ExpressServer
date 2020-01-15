@@ -10,7 +10,7 @@ class Services {
 
     async save () {
         let toJson = JSON.stringify(this.users);
-        fs.writeFileSync('users/users.json', toJson);
+        fs.writeFile('users/users.json', toJson, err => {if (err)  throw err;});
     }
     
     async add (body) {
