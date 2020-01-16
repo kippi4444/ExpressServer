@@ -1,11 +1,18 @@
-class User {
-    constructor(body){
-        this.id = body.id;
-        this.name = body.name;
-        this.email = body.email;
-        this.surname = body.surname;
+const {Schema, model} = require('mongoose');
+
+const user = new Schema ({
+    name: {
+        type: String,
+        required: true
+    },
+    surname: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
     }
+});
 
-}
-
-module.exports = User
+module.exports = model('User', user);

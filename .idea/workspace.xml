@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="40c607f7-df9f-46fe-b63e-6efa995efd72" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/service/user-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/user-service.js" afterDir="false" />
-    </list>
+    <list default="true" id="40c607f7-df9f-46fe-b63e-6efa995efd72" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +46,7 @@
       <option name="presentableId" value="Default" />
       <updated>1579076759097</updated>
       <workItem from="1579076762176" duration="11038000" />
-      <workItem from="1579168051791" duration="10181000" />
+      <workItem from="1579168051791" duration="10565000" />
     </task>
     <servers />
   </component>

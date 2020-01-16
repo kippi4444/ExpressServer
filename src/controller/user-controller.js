@@ -3,6 +3,7 @@ class UserController {
     constructor(){}
     addUser = async (req, res) => {
         try {
+
             const result = await service.add(req.body)
             res.status(201).send(result)
         } catch (e) {

@@ -1,50 +1,32 @@
 const User = require('../model/user');
-const fs = require('fs');
-
 
 class Services {
-    constructor(){
-        this.rawdata = fs.readFileSync('users/users.json');
-        this.users = JSON.parse(this.rawdata);
-    }
 
-    async save () {
-        let toJson = JSON.stringify(this.users);
-        fs.writeFile('users/users.json', toJson, err => {if (err)  throw err;});
-    }
-    
     async add (body) {
-        // const user = new User(body)
-        this.users.push(body);
-        this.save();
+        const user = new User({
+            name: body.name,
+            surname: body.surname,
+            email: body.email
+        });
+        await  user.save();
         return "ok"
     }
     
     async update (req){
-        if(this.users[req.params.id]){
-            this.users.splice(req.params.id, 1, req.body)
-            this.save();
-            return "UPDATED"
-        }else throw new Error ("ERROR: USER NOT FOUND");
+            return await User.findByIdAndUpdate(req.params.id, req.body);
     }
     
     async del(id){
-        let kick = this.users.splice(id, 1);
-        this.save();
-        return `User ${JSON.stringify(kick)} was delited!`
+        return await User.findByIdAndDelete(id);
     }
     
     async getUser (id) {
-        if(this.users[id]) {
-            return await this.users[id];
-        }else throw new Error ("ERROR: USER NOT FOUND");
-       
+        return await User.findById(id);
     }
     
     async getAllUsers (){
-        const result = this.users;
-        return result
+        return await User.find({});
     }
 }
 
-module.exports = new Services
+module.exports = new Services;
