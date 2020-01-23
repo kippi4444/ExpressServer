@@ -3,7 +3,6 @@ const uploadController = require('../controllers/upload-controller');
 const upload_Controller = new uploadController;
 const multer  = require("multer");
 const router = new express.Router();
-const path = require('path');
 
 const storageConfig = multer.diskStorage({
     destination: (req, file, cb) =>{

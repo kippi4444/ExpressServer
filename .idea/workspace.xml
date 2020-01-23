@@ -17,6 +17,7 @@
       <change beforePath="$PROJECT_DIR$/src/middleware/validations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware/validations.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routers/pet.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/pet.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routers/upload.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/upload.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routers/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/pet-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/pet-service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/upload-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/upload-service.js" afterDir="false" />
@@ -93,7 +94,7 @@
       <workItem from="1579531510543" duration="4100000" />
       <workItem from="1579588764501" duration="33230000" />
       <workItem from="1579765620023" duration="366000" />
-      <workItem from="1579766112091" duration="7245000" />
+      <workItem from="1579766112091" duration="7466000" />
     </task>
     <servers />
   </component>
