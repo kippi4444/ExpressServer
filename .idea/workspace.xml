@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="40c607f7-df9f-46fe-b63e-6efa995efd72" name="Default Changelist" comment="" />
+    <list default="true" id="40c607f7-df9f-46fe-b63e-6efa995efd72" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/ExpressServer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bhmhmnpm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579604087547-calendar-2020-year-standart-landscape-text.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579604259410-calendar-2020-year-standart-landscape-text.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579604951908-calendar-2020-year-standart-landscape-text.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579605337050-2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579616055077-blackstreet.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579616087386-Google_Videos_logo[1].png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579616163953-Google_Videos_logo[1].png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/polygon-2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controllers/pet-controller.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controllers/upload-controller.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/middleware/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/middleware/schems.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/middleware/validations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/pet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routers/pet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routers/upload.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routers/user.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/pet-service.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/upload-service.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/user-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/user-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/user-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/user.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/user-service.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/users/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/users/users.json" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,9 +47,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JsBowerSettings">
+    <node-interpreter value="project" />
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
   <component name="ProjectId" id="1WQLEGxOvsncvu723E7H0a8DDC9" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -22,6 +74,8 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -46,7 +100,14 @@
       <option name="presentableId" value="Default" />
       <updated>1579076759097</updated>
       <workItem from="1579076762176" duration="11038000" />
-      <workItem from="1579168051791" duration="10565000" />
+      <workItem from="1579168051791" duration="13089000" />
+      <workItem from="1579184172083" duration="16434000" />
+      <workItem from="1579502488985" duration="10000" />
+      <workItem from="1579502728527" duration="6569000" />
+      <workItem from="1579525445936" duration="5705000" />
+      <workItem from="1579531510543" duration="4100000" />
+      <workItem from="1579588764501" duration="33230000" />
+      <workItem from="1579765620023" duration="366000" />
     </task>
     <servers />
   </component>
@@ -65,5 +126,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

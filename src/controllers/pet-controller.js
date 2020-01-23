@@ -1,51 +1,51 @@
-const service = require('../service/user-service')
-class UserController {
+const service = require('../services/pet-service');
+class PetController {
     constructor(){}
-    addUser = async (req, res) => {
+    add = async (req, res) => {
         try {
 
-            const result = await service.add(req.body)
+            const result = await service.add(req.body);
             res.status(201).send(result)
         } catch (e) {
             res.status(400).send({error:e.message})
         }
-    }
-    deleteUser = async (req, res) => {
+    };
+    delete = async (req, res) => {
         try {
-            const result = await service.del(req.params.id)
+            const result = await service.del(req.params.id);
             res.status(201).send(result)
         } catch (e) {
             res.status(400).send({error: e.message})
         }
-    }
-    updateUser = async (req, res) => {
+    };
+    update = async (req, res) => {
         try {
-            const result = await service.update(req)
+            const result = await service.update(req);
             res.status(201).send(result)
         } catch (e) {
             res.status(400).send({error: e.message})
         }
-    }
+    };
 
-    getUser = async (req, res) => {
+    getPet = async (req, res) => {
         try {
-            const result = await service.getUser(req.params.id)
+            const result = await service.getPet(req.params.id);
+            res.send(result)
+        } catch (e) {
+            res.status(400).send({error:e.message})
+        }
+    };
+    getAllPets = async (req, res) => {
+        try {
+            const result = await service.getAllPets();
             res.send(result)
         } catch (e) {
             res.status(400).send({error:e.message})
         }
     }
-    
 
-    getAllUsers = async (req, res) => {           
-        try {
-            const result = await service.getAllUsers()
-            res.send(result)
-        } catch (e) {
-            res.status(400).send({error:e.message})
-        }
-    }
-    
+
+
 }
 
-module.exports = UserController;
+module.exports = PetController;
