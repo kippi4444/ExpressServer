@@ -2,26 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="40c607f7-df9f-46fe-b63e-6efa995efd72" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/1579778123447-таблица расходов.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/polygon-2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/middleware/schemes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bhmhmnpm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/pet-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/pet-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/upload-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/upload-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/user-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/user-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware/schems.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware/validations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware/validations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routers/pet.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/pet.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routers/upload.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/upload.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routers/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/pet-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/pet-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/upload-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/upload-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/user-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/user-service.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +76,7 @@
       <workItem from="1579531510543" duration="4100000" />
       <workItem from="1579588764501" duration="33230000" />
       <workItem from="1579765620023" duration="366000" />
-      <workItem from="1579766112091" duration="7466000" />
+      <workItem from="1579766112091" duration="9723000" />
     </task>
     <servers />
   </component>

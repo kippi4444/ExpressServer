@@ -1,13 +1,21 @@
 const Pet = require('../models/pet');
+const User = require('../models/user');
 
 class Services {
 
     async add (body) {
+        const user = await  User.findOne({_id: body.owner});
+
+        if (!user) {
+            throw new Error("Owner not found!");
+        }
+
         const pet = new Pet({
             name: body.name,
             species: body.species,
             owner: body.owner
         });
+
         await  pet.save();
         return "ok"
     }
