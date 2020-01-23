@@ -3,7 +3,6 @@ const userRouter = require('./routers/user');
 const petRouter = require('./routers/pet');
 const uploadRouter = require('./routers/upload');
 const mongoose = require('mongoose');
-
 const app = express();
 
 app.use(express.json());
@@ -23,6 +22,7 @@ try {
     app.listen(8000, () => {
         console.log('server on port ' + 8000);
     });
+
 } catch (e) {
     console.log(e);
 }

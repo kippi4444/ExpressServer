@@ -22,16 +22,14 @@ class Services {
         return "deleted"
     }
 
-
-
     async getPet (name) {
-
         return await Pet.find({name}).populate('owner').select('name');
     }
 
     async getAllPets (){
         return await Pet.find({}).populate('owner');
     }
+
 }
 
 module.exports = new Services;

@@ -25,7 +25,7 @@ class Services {
         return {user, token}
     }
 
-     async logout (req){
+    async logout (req){
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token !== req.token
         });
@@ -68,6 +68,7 @@ class Services {
             }
         ]);
     }
+
     async getAllUsersHavePets() {
         return await User.aggregate([
             {

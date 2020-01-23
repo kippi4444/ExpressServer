@@ -1,6 +1,6 @@
 const service = require('../services/pet-service');
 class PetController {
-    constructor(){}
+
     add = async (req, res) => {
         try {
 
@@ -10,6 +10,7 @@ class PetController {
             res.status(400).send({error:e.message})
         }
     };
+
     delete = async (req, res) => {
         try {
             const result = await service.del(req.params.id);
@@ -18,6 +19,7 @@ class PetController {
             res.status(400).send({error: e.message})
         }
     };
+
     update = async (req, res) => {
         try {
             const result = await service.update(req);
@@ -35,16 +37,15 @@ class PetController {
             res.status(400).send({error:e.message})
         }
     };
+
     getAllPets = async (req, res) => {
         try {
             const result = await service.getAllPets();
-            res.send(result)
+            res.send(result);
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send({error:e.message});
         }
-    }
-
-
+    };
 
 }
 

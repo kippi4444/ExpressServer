@@ -1,8 +1,6 @@
-
 class Services {
 
     async upload (req) {
-
         let filedata = req.file;
         console.log(filedata);
         if(!filedata)
