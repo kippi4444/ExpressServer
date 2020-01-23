@@ -1,12 +1,11 @@
+
 class Services {
 
-    async upload (req) {
-        let filedata = req.file;
-        console.log(filedata);
-        if(!filedata)
-            throw new Error ("Ошибка при загрузке файла");
+    async upload (file) {
+        if(!file)
+            throw new Error ("Файл не найден");
         else
-            return "Файл загружен";
+            return {path: file.path.replace(/public/i, 'files')};
     }
 
 }
