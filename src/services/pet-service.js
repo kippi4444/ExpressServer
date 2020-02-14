@@ -1,7 +1,7 @@
 const Pet = require('../models/pet');
 const User = require('../models/user');
 
-class Services {
+class PetServices {
 
     async add (body) {
         const user = await  User.findOne({_id: body.owner});
@@ -25,8 +25,8 @@ class Services {
         return "updated";
     }
 
-    async del(name){
-        await Pet.deleteOne({name});
+    async del(id){
+        await Pet.deleteOne({_id: id.toString()});
         return "deleted"
     }
 
@@ -40,4 +40,4 @@ class Services {
 
 }
 
-module.exports = new Services;
+module.exports = new PetServices;

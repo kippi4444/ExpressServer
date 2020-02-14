@@ -1,5 +1,5 @@
-const service = require('../services/pet-service');
-class PetController {
+const service = require('../services/album-service');
+class AlbumController {
 
     add = async (req, res) => {
         try {
@@ -29,18 +29,29 @@ class PetController {
         }
     };
 
-    getPet = async (req, res) => {
+    upload = async (req, res) => {
         try {
-            const result = await service.getPet(req.params.id);
+
+            const result = await service.upload(req);
+            res.status(201).send(JSON.stringify(result))
+        } catch (e) {
+            res.status(400).send({error: e.message})
+        }
+    };
+
+    getAlbum = async (req, res) => {
+        try {
+
+            const result = await service.getAlbum(req.params.id);
             res.send(result)
         } catch (e) {
             res.status(400).send({error:e.message})
         }
     };
 
-    getAllPets = async (req, res) => {
+    getAllAlbums = async (req, res) => {
         try {
-            const result = await service.getAllPets();
+            const result = await service.getAllAlbums(req.params.id);
             res.send(result);
         } catch (e) {
             res.status(400).send({error:e.message});
@@ -49,4 +60,4 @@ class PetController {
 
 }
 
-module.exports = PetController;
+module.exports = AlbumController;

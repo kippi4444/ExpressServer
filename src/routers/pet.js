@@ -9,7 +9,7 @@ const router = new express.Router();
 router.get('/',  auth, pet_controller.getAllPets);
 router.get('/:id',  auth, pet_controller.getPet);
 router.post('/', valid(schemes.pet), pet_controller.add);
-router.put('/:id',  auth, valid(schemes.pet), pet_controller.update);
+router.put('/:id',  auth,  pet_controller.update);
 router.delete('/:id', auth, pet_controller.delete);
 
 module.exports = router;

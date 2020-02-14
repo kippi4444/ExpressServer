@@ -3,8 +3,9 @@ class UserController {
 
     addUser = async (req, res) => {
         try {
+
             const result = await service.add(req.body);
-            res.status(201).send(result)
+            res.status(201).send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error:e.message});
         }
@@ -12,8 +13,8 @@ class UserController {
 
     deleteUser = async (req, res) => {
         try {
-            const result = await service.del(req.params.id);
-            res.status(201).send(result)
+            const result = await service.del(req);
+            res.status(201).send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error: e.message});
         }
@@ -22,6 +23,15 @@ class UserController {
     updateUser = async (req, res) => {
         try {
             const result = await service.update(req);
+            res.status(201).send(result)
+        } catch (e) {
+            res.status(400).send({error: e.message});
+        }
+    };
+
+    updateUserByAdmin = async (req, res) => {
+        try {
+            const result = await service.updateByAdmin(req);
             res.status(201).send(result)
         } catch (e) {
             res.status(400).send({error: e.message});
@@ -46,9 +56,18 @@ class UserController {
         }
     };
 
-    getUserPets = async (req, res) => {
+    getUserAll = async (req, res) => {
         try {
-            const result = await service.getUserPets(req.params.id);
+            const result = await service.getUserAll(req.params.id);
+            res.send(result)
+        } catch (e) {
+            res.status(400).send({error:e.message});
+        }
+    };
+
+    getMe = async (req, res) => {
+        try {
+            const result = await service.getUserAll(req.user.login);
             res.send(result)
         } catch (e) {
             res.status(400).send({error:e.message});
@@ -64,10 +83,21 @@ class UserController {
         }
     };
 
+    setAvatarUser = async (req, res) => {
+        try {
+
+            const result = await service.setAvatarUsers(req);
+            res.send(result)
+        } catch (e) {
+            res.status(400).send({error:e.message});
+        }
+    };
+
     logoutUser = async (req, res) => {
         try {
             const result = await service.logout(req);
-            res.send(result)
+
+            res.send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error:e.message});
         }

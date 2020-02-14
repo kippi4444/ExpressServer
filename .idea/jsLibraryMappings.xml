@@ -2,7 +2,7 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{ExpressServer/node_modules}" />
-    <file url="PROJECT" libraries="{@types/express, @types/hapi, @types/hapi__joi, @types/joi, @types/joigoose, @types/mongoose, ExpressServer/node_modules}" />
+    <file url="PROJECT" libraries="{@types/eslint, @types/express, @types/hapi, @types/hapi__joi, @types/joi, @types/joigoose, @types/mongoose, ExpressServer/node_modules, fs-extra, mongoose}" />
     <includedPredefinedLibrary name="Node.js Core" />
   </component>
 </project>

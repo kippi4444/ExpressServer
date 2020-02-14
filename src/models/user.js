@@ -1,8 +1,9 @@
+require('dotenv').config({path: "../config.env"});
 const {Schema, model} = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const user = new Schema ({
+const user = new Schema({
     login: {
         type: String,
         unique: true,
@@ -12,6 +13,11 @@ const user = new Schema ({
         type: String,
         required: true,
         minlength: 7,
+        trim: true
+    },
+    birthday: {
+        type: Date,
+        required: true,
         trim: true
     },
     tokens: [{
@@ -24,6 +30,10 @@ const user = new Schema ({
         type: String,
         required: true
     },
+    avatar: {
+        type: Schema.Types.ObjectId,
+        ref: 'Album'
+    },
     number: String,
     surname: {
         type: String,
@@ -33,19 +43,20 @@ const user = new Schema ({
         type: String,
         required: true
     }
-});
+},{ timestamps: { createdAt: 'created_at' } });
 
 user.methods.generateAuthToken = async function () {
     const user = this;
-    const token = jwt.sign({_id: user._id.toString() }, 'hightquality');
-    user.tokens = user.tokens.concat({ token });
+    const token = jwt.sign({_id: user._id.toString()}, process.env.JWT_SECRET_FRAZE);
+    user.tokens = user.tokens.concat({token});
     user.save();
     return token
 };
 
+
 user.statics.findByCredentials = async (login, password) => {
     const user = await User.findOne({login});
-    if(!user) {
+    if (!user) {
         throw new Error('Unable user');
     }
     const isMatch = await bcrypt.compare(password, user.password);
@@ -55,11 +66,19 @@ user.statics.findByCredentials = async (login, password) => {
     return user
 };
 
-user.pre('save', async function(next){
+user.pre('save', async function (next) {
     const user = this;
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8);
     }
+    next();
+});
+
+user.pre('findOneAndUpdate', async function (next) {
+    const user = this;
+    if (user._update.password) {
+        user._update.password = await bcrypt.hash(user._update.password, 8);
+    } else delete user._update.password;
     next();
 });
 

@@ -1,21 +1,26 @@
 const User = require('../models/user');
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+const fs = require('fs-extra');
 const pet = require('../models/pet');
+const Photo = require('../models/photo');
+const AlbumService = require('./album-service');
 
-class Services {
+class UserServices {
 
     async add (body) {
-        const user = new User({
-            login: body.login,
-            password: body.password,
-            name: body.name,
-            surname: body.surname,
-            number: body.number,
-            email: body.email
-        });
+        const user = new User(body);
         await user.save();
+        await fs.ensureDir(`public/${user._id}`);
         const token = await user.generateAuthToken();
+        user.avatar = await AlbumService.add({title: 'Фотографии с профиля', description: '', owner: user.id});
+        const startPhoto = {
+            url: 'files/NoAvatar.jpg',
+            album: user.avatar,
+            owner: user._id,
+        };
+        const photo = new Photo (startPhoto);
+        await photo.save();
+
+        await user.save();
         return {user, token}
     }
 
@@ -34,29 +39,68 @@ class Services {
     }
     
     async update (req){
-        await User.updateOne({login: req.params.id}, req.body);
-        return "updated";
+        return await User.findOneAndUpdate({login: req.user.login}, req.body);
+    }
+
+    async updateByAdmin (req){
+        return await User.findOneAndUpdate({login: req.params.id}, req.body);
     }
     
-    async del(login){
-        const user = await User.findOne({login});
-        await pet.deleteMany({owner: user._id.toString()});
-        await User.deleteOne({login});
-        return "deleted"
+    async del(req){
+        if (req.user.login === req.params.id){
+            const user = await User.findOne({login : req.params.id});
+            await pet.deleteMany({owner: user._id.toString()});
+            if (!await fs.pathExists(`public/${user._id}`)){
+                await fs.remove(`public/${user._id}`);
+            }
+            await User.deleteOne({login: req.params.id});
+            return "deleted"
+        } throw new Error('YOU SHELL NOT PASS');
     }
 
     async getUser (login) {
-        return await User.find({login});
+        return await User.aggregate([
+            {
+                $match: {$or: [ { name: {$regex: `^${login}\.*`, $options: 'i' } },
+                        { surname: {$regex: `^${login}\.*`, $options: 'i' } } ]}
+            },
+            {
+                $lookup: {
+                    from: "photos",
+                    localField: 'avatar',
+                    foreignField: "album",
+                    as: "photos"
+                }
+            },
+            { $unset: ["tokens", "__v", "password"] }
+        ]);
+
     }
     
     async getAllUsers (){
-        return await User.find({});
+
+    return await User.aggregate([
+                             {
+                                 $match: {}
+                             },
+                             {
+                                 $lookup: {
+                                     from: "photos",
+                                     localField: 'avatar',
+                                     foreignField: "album",
+                                     as: "photos"
+                                 }
+                             },
+                             { $unset: ["tokens", "__v", "password"] }
+                         ]);
     }
 
-    async getUserPets (id){
+
+    async getUserAll(login){
+
         return await User.aggregate([
             {
-                $match: { _id: ObjectId(id) }
+                $match: { login: login }
             },
             {
                 $lookup: {
@@ -65,8 +109,18 @@ class Services {
                     foreignField: "owner",
                     as: "pets"
                 }
-            }
+            },
+            {
+                $lookup: {
+                    from: "photos",
+                    localField: 'avatar',
+                    foreignField: "album",
+                    as: "photos"
+                }
+            },
+            { $unset: ["tokens", "__v", "password"] }
         ]);
+
     }
 
     async getAllUsersHavePets() {
@@ -86,4 +140,4 @@ class Services {
 
 }
 
-module.exports = new Services;
+module.exports = new UserServices;

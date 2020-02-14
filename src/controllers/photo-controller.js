@@ -1,10 +1,20 @@
-const service = require('../services/pet-service');
-class PetController {
+
+const service = require('../services/photo-service');
+class PhotoController {
 
     add = async (req, res) => {
         try {
+            const result = await service.add(req);
+            res.status(201).send(JSON.stringify(result))
+        } catch (e) {
+            res.status(400).send({error:e.message})
+        }
+    };
 
-            const result = await service.add(req.body);
+
+    setAvatar = async (req, res) => {
+        try {
+            const result = await service.setAvatarUsers(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error:e.message})
@@ -29,18 +39,29 @@ class PetController {
         }
     };
 
-    getPet = async (req, res) => {
+    upload = async (req, res) => {
         try {
-            const result = await service.getPet(req.params.id);
+
+            const result = await service.upload(req);
+            res.status(201).send(JSON.stringify(result))
+        } catch (e) {
+            res.status(400).send({error: e.message})
+        }
+    };
+
+    getPhoto = async (req, res) => {
+        try {
+
+            const result = await service.getPhoto(req.params.id);
             res.send(result)
         } catch (e) {
             res.status(400).send({error:e.message})
         }
     };
 
-    getAllPets = async (req, res) => {
+    getAllPhotos = async (req, res) => {
         try {
-            const result = await service.getAllPets();
+            const result = await service.getAllPhotos(req.params.id);
             res.send(result);
         } catch (e) {
             res.status(400).send({error:e.message});
@@ -49,4 +70,4 @@ class PetController {
 
 }
 
-module.exports = PetController;
+module.exports = PhotoController;

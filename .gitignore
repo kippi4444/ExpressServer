@@ -1,3 +1,5 @@
 .idea
 .vscode
+dot.env
 node_modules
+public

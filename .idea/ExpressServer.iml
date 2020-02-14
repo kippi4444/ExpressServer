@@ -14,5 +14,8 @@
     <orderEntry type="library" name="@types/joi" level="application" />
     <orderEntry type="library" name="@types/joigoose" level="application" />
     <orderEntry type="library" name="@types/hapi" level="application" />
+    <orderEntry type="library" name="@types/eslint" level="application" />
+    <orderEntry type="library" name="fs-extra" level="project" />
+    <orderEntry type="library" name="mongoose" level="project" />
   </component>
 </module>

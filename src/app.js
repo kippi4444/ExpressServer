@@ -1,26 +1,33 @@
+require('dotenv').config({path:"./config.env"});
 const express = require('express');
 const userRouter = require('./routers/user');
+const cors = require('cors');
 const petRouter = require('./routers/pet');
-const uploadRouter = require('./routers/upload');
+const albumRouter = require('./routers/album');
+const photoRouter = require('./routers/photo');
 const mongoose = require('mongoose');
 const app = express();
+const Port = process.env.PORT | 8000;
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use('/files', express.static('public'));
 app.use('/users', userRouter);
 app.use('/pets', petRouter);
-app.use('/upload', uploadRouter);
+app.use('/albums', albumRouter);
+app.use('/photos', photoRouter);
+
 
 try {
-    mongoose.connect('mongodb://127.0.0.1:27017/users', {
+    mongoose.connect(process.env.MONGO_DB, {
         useNewUrlParser: true,
         useFindAndModify: false,
         useUnifiedTopology: true,
         useCreateIndex: true
     });
-    app.listen(8000, () => {
-        console.log('server on port ' + 8000);
+    app.listen(Port, () => {
+        console.log('server on port ' + Port);
     });
 
 } catch (e) {

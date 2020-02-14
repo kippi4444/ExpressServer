@@ -2,19 +2,41 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="40c607f7-df9f-46fe-b63e-6efa995efd72" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/1579786700952-ASUS_Touchpad_Handwriting_V2_0_2.rar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/1579786752870-ASUS_Touchpad_Handwriting_V2_0_2.rar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/middleware/multerStorage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579865536697-public.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579865593589-public.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579865643819-public.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579865750291-public.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579865796205-public.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/1579865907500-public.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ExpressServer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ExpressServer.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/upload-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/upload-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routers/upload.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/upload.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/upload-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/upload-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/user-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/user-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/middleware/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/middleware/schemes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware/schemes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routers/pet.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/pet.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routers/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/user-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/user-service.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -40,12 +62,18 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.13.0" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../angular-hero" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.stylelint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.path.for.package.stylelint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="node.js.selected.package.stylelint" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="settings.nodejs" />
@@ -61,6 +89,23 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -81,7 +126,16 @@
       <workItem from="1579531510543" duration="4100000" />
       <workItem from="1579588764501" duration="33230000" />
       <workItem from="1579765620023" duration="366000" />
-      <workItem from="1579766112091" duration="11835000" />
+      <workItem from="1579766112091" duration="28063000" />
+      <workItem from="1580106762021" duration="3869000" />
+      <workItem from="1580213315261" duration="14114000" />
+      <workItem from="1580331824418" duration="24716000" />
+      <workItem from="1580830337755" duration="1569000" />
+      <workItem from="1580885562570" duration="9741000" />
+      <workItem from="1580916115991" duration="693000" />
+      <workItem from="1580971350055" duration="18852000" />
+      <workItem from="1581057698248" duration="9769000" />
+      <workItem from="1581317125653" duration="59852000" />
     </task>
     <servers />
   </component>
@@ -103,5 +157,21 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="js.build_tools.npm">
+        <watch expression="user._id" language="JavaScript" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand>
+      <path>
+        <item name="ExpressServer" type="b2602c69:ProjectViewProjectNode" />
+        <item name="ExpressServer" type="462c0819:PsiDirectoryNode" />
+      </path>
+    </expand>
+    <select />
   </component>
 </project>
