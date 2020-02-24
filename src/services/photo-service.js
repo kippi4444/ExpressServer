@@ -1,10 +1,12 @@
 const fs = require('fs');
 const Photo = require('../models/photo');
 const User = require('../models/user');
+const Album = require('../models/album');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 class PhotoServices {
+
 
      async add (req) {
         const user = await  User.findOne({_id: req.user._id});
@@ -12,18 +14,35 @@ class PhotoServices {
             throw new Error("Owner not found!");
         }
         let photos = [];
-        for (let p of req.files){
-            const getUrl = p.path.replace(/public/i, `files`);
-            const body = {
+        req.files.map( data => {
+         const getUrl = data.path.replace(/public/i, `files`);
+            const photo = {
+             url: getUrl,
+             album: ObjectId(req.params.id),
+             owner: req.user._id,
+         };
+        photos.push(photo);
+        });
+         return await Photo.insertMany(photos);
+
+    }
+
+    async addWallPhoto (req) {
+        const album = await  Album.findOne({owner: req.user._id, title: 'Фотографии со стены' });
+        if (!album) {
+            throw new Error("Album not found!");
+        }
+        let photos = [];
+        req.files.map( data => {
+            const getUrl = data.path.replace(/public/i, `files`);
+            const photo = {
                 url: getUrl,
-                album: ObjectId(req.params.id),
+                album: album._id,
                 owner: req.user._id,
             };
-            const photo = new Photo (body);
-            await  photo.save();
             photos.push(photo);
-        }
-        return photos;
+        });
+        return await Photo.insertMany(photos);
     }
 
 
@@ -34,6 +53,14 @@ class PhotoServices {
             console.log(err)});
         await Photo.deleteOne({_id: id.toString()});
         return "deleted"
+    }
+
+    async updPhoto (req) {
+        const user = await  User.findOne({_id: req.user._id});
+        if (!user) {
+            throw new Error("Owner not found!");
+        }
+        return await Photo.findOneAndUpdate({_id: req.body.id.toString(), owner: req.user._id}, {album: req.body.album});
     }
 
      async getPhoto (id) {
@@ -55,7 +82,7 @@ class PhotoServices {
         };
         const photo = new Photo (body);
         await photo.save();
-        // const getUrl = `files/${req.user._id}/${req.file.originalname}`;
+
 
         return 'ok';
     }

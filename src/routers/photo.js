@@ -10,7 +10,9 @@ const router = new express.Router();
 
 router.get('/all/:id',  auth, photo_controller.getAllPhotos);
 router.get('/:id',  auth, photo_controller.getPhoto);
+router.post('/wall',  auth, upload.array(`uploadedImages`, 10), photo_controller.addWallPhoto);
 router.post('/:id',  auth, upload.array(`uploadedImages`, 10), photo_controller.add);
+router.put('/upd',  auth, photo_controller.update);
 router.put('/avatar',  auth, upload.single('avatar'), photo_controller.setAvatar);
 router.delete('/:id', auth, photo_controller.delete);
 

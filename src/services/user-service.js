@@ -2,6 +2,7 @@ const User = require('../models/user');
 const fs = require('fs-extra');
 const pet = require('../models/pet');
 const Photo = require('../models/photo');
+const Album = require('../models/album');
 const AlbumService = require('./album-service');
 
 class UserServices {
@@ -12,8 +13,12 @@ class UserServices {
         await fs.ensureDir(`public/${user._id}`);
         const token = await user.generateAuthToken();
         user.avatar = await AlbumService.add({title: 'Фотографии с профиля', description: '', owner: user.id});
+        await AlbumService.add({title: 'Фотографии со стены', description: '', owner: user.id});
+        fs.copyFile('public/NoAvatar.jpg', `${__dirname}`+`../../../public/${user._id}/NoAvatar.jpg`,
+            (err) => {if (err) return console.error(err);}
+            );
         const startPhoto = {
-            url: 'files/NoAvatar.jpg',
+            url: `files/${user._id}/NoAvatar.jpg`,
             album: user.avatar,
             owner: user._id,
         };
@@ -53,6 +58,8 @@ class UserServices {
             if (!await fs.pathExists(`public/${user._id}`)){
                 await fs.remove(`public/${user._id}`);
             }
+            await Photo.deleteMany({owner: user._id.toString()});
+            await Album.deleteMany({owner: user._id.toString()});
             await User.deleteOne({login: req.params.id});
             return "deleted"
         } throw new Error('YOU SHELL NOT PASS');
@@ -72,27 +79,86 @@ class UserServices {
                     as: "photos"
                 }
             },
+            {
+                $lookup: {
+                    from: "friends",
+                    localField: '_id',
+                    foreignField: 'owner',
+                    as: "friends"
+                }
+            },
+            {
+                $lookup: {
+                    from: "requests",
+                    localField: '_id',
+                    foreignField: 'owner',
+                    as: "requests"
+                }
+            },
             { $unset: ["tokens", "__v", "password"] }
         ]);
 
     }
     
-    async getAllUsers (){
+    async getAllUsers (req){
 
     return await User.aggregate([
-                             {
-                                 $match: {}
-                             },
-                             {
-                                 $lookup: {
-                                     from: "photos",
-                                     localField: 'avatar',
-                                     foreignField: "album",
-                                     as: "photos"
-                                 }
-                             },
-                             { $unset: ["tokens", "__v", "password"] }
-                         ]);
+                     {
+                         $match: {}
+                     },
+                     {
+                         $lookup: {
+                             from: "photos",
+                             localField: 'avatar',
+                             foreignField: "album",
+                             as: "photos"
+                         }
+                     },
+                     {
+                        $lookup: {
+                            from: "friends",
+                            localField: '_id',
+                            foreignField: 'owner',
+                            as: "friends"
+                        }
+                     },
+                    {
+                        $lookup: {
+                            from: "requests",
+                            localField: '_id',
+                            foreignField: 'owner',
+                            as: "requests"
+                        }
+                    },
+                    // { $addFields:
+                    //         { isRequest:
+                    //                 {
+                    //                     $cond: [{
+                    //                         $size: {
+                    //                             $filter: { input: "$requests", as: "friend", cond:  {
+                    //                                 $ne: [ "$$friend", req.user._id ] }
+                    //                             }
+                    //                         }
+                    //                     }, true, false ]
+                    //                 }
+                    //         }
+                    // },
+                    // { $addFields:
+                    //         { isFriend:
+                    //                 {
+                    //                     $cond: [{
+                    //                         $size: {
+                    //                             $filter: { input: "$friends", as: "friend", cond:  {
+                    //                                     $ne: [ "$$friend", req.user._id ] }
+                    //                             }
+                    //                         }
+                    //                     }, true, false ]
+                    //                 }
+                    //         }
+                    // },
+
+                     { $unset: ["tokens", "__v", "password" ] }
+                 ]);
     }
 
 
@@ -116,6 +182,22 @@ class UserServices {
                     localField: 'avatar',
                     foreignField: "album",
                     as: "photos"
+                }
+            },
+            {
+                $lookup: {
+                    from: "friends",
+                    localField: '_id',
+                    foreignField: 'owner',
+                    as: "friends"
+                }
+            },
+            {
+                $lookup: {
+                    from: "requests",
+                    localField: '_id',
+                    foreignField: 'owner',
+                    as: "requests"
                 }
             },
             { $unset: ["tokens", "__v", "password"] }

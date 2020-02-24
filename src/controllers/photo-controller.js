@@ -11,6 +11,15 @@ class PhotoController {
         }
     };
 
+    addWallPhoto = async (req, res) => {
+        try {
+            const result = await service.addWallPhoto(req);
+            res.status(201).send(JSON.stringify(result))
+        } catch (e) {
+            res.status(400).send({error:e.message})
+        }
+    };
+
 
     setAvatar = async (req, res) => {
         try {
@@ -32,7 +41,7 @@ class PhotoController {
 
     update = async (req, res) => {
         try {
-            const result = await service.update(req);
+            const result = await service.updPhoto(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error: e.message})

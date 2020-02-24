@@ -26,6 +26,12 @@ class AlbumService {
     }
 
     static async del(id){
+        const photos =  await Photo.find({album: id.toString()});
+        for (p of photos){
+            const getUrl = p.url.replace(/files/i, `public`);
+            fs.unlink(getUrl, err => {
+                console.log(err)});
+        }
         await Photo.deleteMany({album: id.toString()});
         await Album.deleteOne({_id: id.toString()});
         return "deleted"
