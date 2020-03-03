@@ -83,21 +83,11 @@ class UserController {
         }
     };
 
-    setAvatarUser = async (req, res) => {
-        try {
-
-            const result = await service.setAvatarUsers(req);
-            res.send(result)
-        } catch (e) {
-            res.status(400).send({error:e.message});
-        }
-    };
 
     logoutUser = async (req, res) => {
         try {
             const result = await service.logout(req);
-
-            res.send(JSON.stringify(result))
+            res.status(200).send({responce: "successfully logout"});
         } catch (e) {
             res.status(400).send({error:e.message});
         }

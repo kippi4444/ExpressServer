@@ -63,7 +63,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.13.0" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/ngrx-example1" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.stylelint" value="true" />
@@ -142,7 +142,8 @@
       <workItem from="1580916115991" duration="693000" />
       <workItem from="1580971350055" duration="18852000" />
       <workItem from="1581057698248" duration="9769000" />
-      <workItem from="1581317125653" duration="179108000" />
+      <workItem from="1581317125653" duration="228834000" />
+      <workItem from="1582872917140" duration="39949000" />
     </task>
     <servers />
   </component>

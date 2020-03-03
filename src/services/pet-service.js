@@ -17,7 +17,7 @@ class PetServices {
         });
 
         await  pet.save();
-        return "ok"
+        return pet
     }
 
     async update (req){
@@ -27,7 +27,7 @@ class PetServices {
 
     async del(id){
         await Pet.deleteOne({_id: id.toString()});
-        return "deleted"
+        return id
     }
 
     async getPet (name) {

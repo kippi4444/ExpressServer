@@ -8,11 +8,11 @@ const ObjectId = mongoose.Types.ObjectId;
 class DialogMessageServices {
 
      static async addDialog (body) {
-        const findDialog = await Dialog.find({person:
-            {$elemMatch:
-                    {$or:[{'person.id': body.person[1].id}, {'id': body.person[0].id}]}
-                },
-            }
+        const findDialog = await Dialog.find(
+             {$or: [
+                        {$and: [{'person': body.person[0]}, {'person': body.person[1]}]},
+                        {$and: [{'person': body.person[1]}, {'person': body.person[0]}]}
+                        ]}
         );
 
         if (findDialog.length>0) {
@@ -21,7 +21,7 @@ class DialogMessageServices {
 
         const dialog = new Dialog(body);
         await dialog.save();
-        return dialog
+        return dialog;
     }
 
     static async addMes (body) {
@@ -40,12 +40,12 @@ class DialogMessageServices {
 
     static async delDialog(id){
         await Dialog.deleteOne({_id: id.toString()});
-        return "deleted"
+        return id
     }
 
     static async delMes(id){
         await Mes.deleteOne({_id: id.toString()});
-        return "deleted"
+        return id
     }
 
     static async editDialog(body){
@@ -61,17 +61,15 @@ class DialogMessageServices {
     }
 
     static async getDialogs(userId){
-        // const dialogs = await Dialog.find({ person:{ $elemMatch: {id: userId.toString()}}});
+     const id = ObjectId(userId);
         return await Dialog.aggregate([
-            {$match: { person:{ $elemMatch: {id: userId}}}},
-
+            {$match: { person: {$all:   [id] } }},
             { $addFields:
                     { persons:
-                            {
-                                $filter:
+                            {$filter:
                                     {
                                         input: "$person", as: "id", cond:
-                                            {$ne: ["$$id.id", userId]}
+                                            {$ne: ["$$id", userId]}
                                     }
                             }
                     }
@@ -80,7 +78,7 @@ class DialogMessageServices {
             {
                 $lookup: {
                     from: "users",
-                    localField: 'persons.id',
+                    localField: 'persons',
                     foreignField: '_id',
                     as: "persons"
                 }
@@ -98,6 +96,7 @@ class DialogMessageServices {
 
         ]);
 
+
     }
 
      static async getAllDialogs(){
@@ -105,7 +104,9 @@ class DialogMessageServices {
     }
 
     static async getMessages(dialogId){
-        return await Mes.find({dialog: dialogId.toString()});
+        const dialog = await Dialog.findOne({_id: ObjectId(dialogId)});
+        const mes = await Mes.find({dialog: dialogId.toString()});
+        return {mes, dialog};
     }
 
 }

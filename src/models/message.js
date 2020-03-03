@@ -22,7 +22,7 @@ const message = new Schema ({
     name: {
         type: String,
         required: true
-    },
+    }
 },{ timestamps: { createdAt: 'created_at' } });
 
 module.exports = model('Message', message);

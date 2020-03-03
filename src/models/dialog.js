@@ -2,11 +2,10 @@ const  {Schema, model} = require('mongoose');
 
 const dialog = new Schema ({
     title: String,
-    person: [{id: {
+    person: [{
             type: Schema.Types.ObjectId,
-            require: true,
-            ref: 'User'}
-        }]
+            require: true
+            }]
 
 });
 

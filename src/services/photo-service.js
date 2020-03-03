@@ -52,14 +52,17 @@ class PhotoServices {
         fs.unlink(getUrl, err => {
             console.log(err)});
         await Photo.deleteOne({_id: id.toString()});
-        return "deleted"
+         try {
+             return id
+         }
+         catch (e) {
+             return e
+         }
+
+
     }
 
     async updPhoto (req) {
-        const user = await  User.findOne({_id: req.user._id});
-        if (!user) {
-            throw new Error("Owner not found!");
-        }
         return await Photo.findOneAndUpdate({_id: req.body.id.toString(), owner: req.user._id}, {album: req.body.album});
     }
 
@@ -84,7 +87,7 @@ class PhotoServices {
         await photo.save();
 
 
-        return 'ok';
+        return photo;
     }
 
 }

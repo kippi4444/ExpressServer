@@ -22,7 +22,7 @@ class FriendController {
 
     delFriend = async (req, res) => {
         try {
-            const result = await service.delFriend(req.params.id);
+            const result = await service.delFriend(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error: e.message})

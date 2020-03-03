@@ -4,6 +4,8 @@ const pet = require('../models/pet');
 const Photo = require('../models/photo');
 const Album = require('../models/album');
 const AlbumService = require('./album-service');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 class UserServices {
 
@@ -40,11 +42,14 @@ class UserServices {
             return token.token !== req.token
         });
         await req.user.save();
-        return "Logout"
     }
     
     async update (req){
         return await User.findOneAndUpdate({login: req.user.login}, req.body);
+    }
+
+    async changeStatus (body){
+        return await User.findOneAndUpdate({_id: ObjectId(body.id)}, {online: body.online} );
     }
 
     async updateByAdmin (req){
@@ -97,12 +102,11 @@ class UserServices {
             },
             { $unset: ["tokens", "__v", "password"] }
         ]);
-
     }
     
     async getAllUsers (req){
-
-    return await User.aggregate([
+        if (!req.query.limit) {
+          return await User.aggregate([
                      {
                          $match: {}
                      },
@@ -159,6 +163,77 @@ class UserServices {
 
                      { $unset: ["tokens", "__v", "password" ] }
                  ]);
+        } else
+        {
+
+        let skip = 0;
+        if(req.query.page > 1){
+            skip = req.query.page*req.query.limit;
+        }
+        const limit = + req.query.limit;
+
+            return await User.aggregate([
+                {
+                    $match: {}
+                },
+                {
+                    $lookup: {
+                        from: "photos",
+                        localField: 'avatar',
+                        foreignField: "album",
+                        as: "photos"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "friends",
+                        localField: '_id',
+                        foreignField: 'owner',
+                        as: "friends"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "requests",
+                        localField: '_id',
+                        foreignField: 'owner',
+                        as: "requests"
+                    }
+                },
+                // { $addFields:
+                //         { isRequest:
+                //                 {
+                //                     $cond: [{
+                //                         $size: {
+                //                             $filter: { input: "$requests", as: "friend", cond:  {
+                //                                 $ne: [ "$$friend", req.user._id ] }
+                //                             }
+                //                         }
+                //                     }, true, false ]
+                //                 }
+                //         }
+                // },
+                // { $addFields:
+                //         { isFriend:
+                //                 {
+                //                     $cond: [{
+                //                         $size: {
+                //                             $filter: { input: "$friends", as: "friend", cond:  {
+                //                                     $ne: [ "$$friend", req.user._id ] }
+                //                             }
+                //                         }
+                //                     }, true, false ]
+                //                 }
+                //         }
+                // },
+                { $sort : {_id: 1} },
+                { $skip : skip },
+                { $limit : limit },
+                { $unset: ["tokens", "__v", "password" ] }
+            ]);
+
+
+        }
     }
 
 

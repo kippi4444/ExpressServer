@@ -1,7 +1,8 @@
 const Friend = require('../models/friend');
 const Request = require('../models/friendRequest');
 const User = require('../models/user');
-
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 class FriendServices {
 
@@ -12,12 +13,12 @@ class FriendServices {
                 {owner: req.body.friend, friend: req.body.owner }
             ]});
 
-        const userHavethisFriend = await Friend.findOne({$or: [
+        const userHaveThisFriend = await Friend.findOne({$or: [
             {owner: req.body.owner, friend: req.body.friend },
             {owner: req.body.friend, friend: req.body.owner }
             ]});
 
-        if (userHavethisFriend){
+        if (userHaveThisFriend){
             throw new Error("It is your Friend!");
         }
 
@@ -25,28 +26,27 @@ class FriendServices {
             const reqForFriends = new Request({friend: req.body.friend , owner: req.body.owner });
             await  reqForFriends.save();
             return reqForFriends;
-        } else if(friendRequest.friend === req.user._id) {
-            throw new Error("Requset send!");
+        } else if(friendRequest.friend.toString() === req.user._id.toString()) {
+            throw new Error("Request send!");
         } else  {
-
-        const friend = new Friend({friend: req.body.friend, owner: req.body.owner });
-        const ownerFriend = new Friend({friend: req.body.owner, owner: req.body.friend });
-        await friend.save();
-        await ownerFriend.save();
-        this.delReq(friendRequest._id);
-        return friend;
+            const friend = new Friend({friend: req.body.friend, owner: req.body.owner });
+            const ownerFriend = new Friend({friend: req.body.owner, owner: req.body.friend });
+            await friend.save();
+            await ownerFriend.save();
+            await this.delReq(friendRequest._id);
+            return  friend;
         }
     }
 
     async delReq(id){
-        await Request.deleteOne({_id: id});
-        return "deleted"
+        await Request.deleteOne({_id: ObjectId(id)});
+        return id
     }
 
-    async delFriend(id){
-        await Friend.deleteOne({owner: id.toString()});
-        await Friend.deleteOne({friend: id.toString()});
-        return "deleted"
+    async delFriend(req){
+        await Friend.deleteOne({owner: req.params.id.toString(), friend: req.user._id.toString()});
+        await Friend.deleteOne({friend: req.params.id.toString(), owner: req.user._id.toString()});
+        return req.params.id
     }
 
     async getAllReq (user) {

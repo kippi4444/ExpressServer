@@ -35,6 +35,10 @@ const user = new Schema({
         ref: 'Album'
     },
     number: String,
+    online: {
+        type: Boolean,
+        default: false
+    },
     surname: {
         type: String,
         required: true

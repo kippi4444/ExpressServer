@@ -12,14 +12,13 @@ const router = new express.Router();
 
 
 router.get('/',  user_controller.getAllUsers);
+router.post('/',  valid(schemes.user),  user_controller.addUser);
 router.get('/me', auth, user_controller.getMe);
-router.get('/:id/all',  user_controller.getUserAll);
+router.get('/:id/all', auth, user_controller.getUserAll);
 router.get('/pets', auth, user_controller.getAllUsersHavePets);
 router.post('/login',  user_controller.loginUser);
 router.get('/logout', auth, user_controller.logoutUser);
 router.get('/:login', auth, user_controller.getUser);
-router.post('/',  valid(schemes.user),  user_controller.addUser);
-router.put('/setavatar', auth, upload.single('avatar'), user_controller.setAvatarUser);
 router.put('/:id', auth, user_controller.updateUser);
 router.put('/update/:id', auth, user_controller.updateUserByAdmin);
 router.delete('/:id', auth, user_controller.deleteUser);
