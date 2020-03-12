@@ -12,7 +12,7 @@ const user = Joi.object({
         surname: Joi.string()
             .trim()
             .empty()
-            .alphanum()
+            .pattern(new RegExp('^[a-zA-ZА-Яа-я]{3,30}$'))
             .min(3)
             .max(30)
             .error((errors) => new Error('"surname" no valid')),
@@ -20,14 +20,14 @@ const user = Joi.object({
         name: Joi.string()
             .trim()
             .empty()
-            .alphanum()
+            .pattern(new RegExp('^[a-zA-ZА-Яа-я]{3,30}$'))
             .min(3)
             .max(30)
             .error((errors) => new Error('"name" no valid')),
 
         password: Joi.string()
             .trim()
-            .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+            .pattern(new RegExp('^[a-zA-Z0-9А-Яа-я]{3,30}$'))
             .error((errors) => new Error('"password" no valid')),
 
         email: Joi.string()
@@ -48,7 +48,7 @@ const pet = Joi.object({
 
         name: Joi.string()
             .empty()
-            .alphanum()
+            .pattern(new RegExp('^[a-zA-ZА-Яа-я]{3,30}$'))
             .min(2)
             .max(30)
             .required()
@@ -56,7 +56,7 @@ const pet = Joi.object({
 
         species: Joi.string()
             .empty()
-            .alphanum()
+            .pattern(new RegExp('^[a-zA-ZА-Яа-я]{3,30}$'))
             .min(3)
             .max(30)
             .required()

@@ -9,7 +9,6 @@ const ObjectId = mongoose.Types.ObjectId;
 class AlbumService {
 
     static async add (body) {
-
         const user = await  User.findOne({_id: body.owner});
 
         if (!user) {
@@ -29,20 +28,50 @@ class AlbumService {
 
     static async del(id){
         const photos =  await Photo.find({album: id});
-        for (let p of photos){
-            const getUrl = p.url.replace(/files/i, `public`);
-            fs.unlink(getUrl, err => {
-                console.log(err)});
+        try {
+            await Photo.deleteMany({album: id.toString()});
+            await Album.deleteOne({_id: id.toString()});
+            for (let p of photos){
+                const getUrl = p.url.replace(/files/i, `public`);
+                fs.unlink(getUrl, err => {
+                    console.log(err)});
+            }
+            return id
         }
-        await Photo.deleteMany({album: id.toString()});
-        await Album.deleteOne({_id: id.toString()});
-        return id
+        catch (err) {
+            return err;
+        }
     }
 
     static async getAlbum (id) {
-        return await Album.aggregate([
+        const photos =  await Photo.aggregate([
             {
-                $match: { _id: ObjectId(id) }
+                $match: {album: ObjectId(id)}
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: 'owner',
+                    foreignField: "_id",
+                    as: "owner"
+                }
+            },
+            {$unwind: "$owner"},
+            {
+                $lookup: {
+                    from: "photos",
+                    localField: 'owner.avatar',
+                    foreignField: "album",
+                    as: "owner.photos"
+                }
+            },
+            {
+                $lookup: {
+                    from: "albums",
+                    localField: 'album',
+                    foreignField: "_id",
+                    as: "album"
+                }
             },
             {
                 $lookup: {
@@ -51,6 +80,14 @@ class AlbumService {
                     foreignField: "album",
                     as: "photos"
                 }
+            },
+            {$unwind: "$album"},
+            {$sort: {_id: 1}},
+            {$unset: ['owner.password', 'owner.tokens' , 'owner.__v']}
+        ]);
+        const album = await Album.aggregate([
+            {
+                $match: { _id: ObjectId(id) }
             },
             {
                 $lookup: {
@@ -64,7 +101,7 @@ class AlbumService {
             {$unset: ['owner.password', 'owner.tokens']}
         ]);
 
-
+        return { album: album[0] ,  photos}
     }
 
     static async getAllAlbums (login){

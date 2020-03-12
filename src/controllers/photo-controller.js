@@ -30,9 +30,19 @@ class PhotoController {
         }
     };
 
+    changeAvatar = async (req, res) => {
+        try {
+            const result = await service.changeAvatarUser(req);
+            res.status(201).send(JSON.stringify(result))
+        } catch (e) {
+            res.status(400).send({error: e.message})
+        }
+    };
+
+
     delete = async (req, res) => {
         try {
-            const result = await service.del(req.params.id);
+            const result = await service.del(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error: e.message})
@@ -42,16 +52,6 @@ class PhotoController {
     update = async (req, res) => {
         try {
             const result = await service.updPhoto(req);
-            res.status(201).send(JSON.stringify(result))
-        } catch (e) {
-            res.status(400).send({error: e.message})
-        }
-    };
-
-    upload = async (req, res) => {
-        try {
-
-            const result = await service.upload(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error: e.message})

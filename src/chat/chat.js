@@ -8,68 +8,62 @@ require('events').EventEmitter.defaultMaxListeners = 25;
 
 async function start() {
 
-let sockets  = [];
-let room = [];
-// ===== GeneralChannelStart ========= //
-    io.on('connection', (generalSocket) => {
-        generalSocket.on('addSession', function(session) {
-            generalSocket.session = session;
-            userService.changeStatus({id: session.sender, online: true});
-            if(!sockets.includes(generalSocket)) {
-                sockets.push(generalSocket);
-            }
-// =================== NameSpacesStart ======= //
-            io.of('/private').on('connection', (socket) => {
-                socket.on('goRoom', function(session) {
-                    socket.session = session;
-                    if(!room.includes(socket)) {
-                        room.push(socket);
-                        socket.join(session.dialog._id);
-                        socket.on('chat message', function(msg){
-                            async function fu(){
-                                try {
-                                  let res = await dialogService.addMes(msg);
-                                  if (res){
-                                    io.of('private').to(session.dialog._id).emit('chat message', res);
-                                    socket.session.dialog.person.forEach(user => {
-                                        if (user !== msg.user){
-                                            const userSocket = sockets.filter(sckt => {
-                                                return sckt.session.sender === user});
-                                            if (userSocket.length > 0){
-                                                userSocket.forEach(usr => {
-                                                    io.to(`${usr.id}`).emit('message', res);
-                                                });
-                                            }
-                                        }
-                                    });
-                                  }
-                                }
-                                catch (e) {
-                                    console.log(e)
-                                }
+io.engine.generateId = function (socket) {
+    // generate a new custom id
+    return socket._query.sender
+};
+
+io.use(function(socket, next) {
+    if (socket.handshake.query.sender !== undefined) {
+        next();
+    } else {
+        next(new Error('WRONG SOCKET'));
+    }
+});
+
+io.of('/main').on('connection', function connection(socket) {
+        const sender = socket.handshake.query.sender;
+        let room = '';
+        userService.changeStatus({id: sender, online: true});
+
+        socket.on(('goRoom'), function goRoom(dialog) {
+            room = dialog;
+            socket.join(dialog.dialog);
+        });
+        socket.on('chat message', function(msg){
+            async function fu(){
+                try {
+                    let res = await dialogService.addMes(msg);
+                    if (res){
+                        io.of('main').to(room.dialog).emit('chat message', res);
+                        msg.dialog.person.forEach(user => {
+                            if (user !== msg.user){
+                                io.of('main').to(`/main#${user}`).emit('message', {event: 'newMes', mes: res});
+
                             }
-                            fu();
                         });
                     }
-                    socket.on(('disconnect'), function () {
-                        socket.leave(socket.session.dialog._id);
-                        room = room.filter(room => room !== socket);
-                        socket.removeAllListeners();
-                    });
-                });
-
-            });
-// =================== NameSpacesEnd ======= //
-        });
-        generalSocket.on(('disconnect'), function () {
-            if (generalSocket.session){
-                userService.changeStatus({id: generalSocket.session.sender, online: false});
+                }
+                catch (e) {
+                    console.log(e)
+                }
             }
-            sockets = sockets.filter(socket => socket !== generalSocket);
-            generalSocket.removeAllListeners();
+            fu();
+        });
+        socket.on(('leftRoom'), function () {
+            socket.leave(room.dialog);
+        });
+        socket.on(('notification'), function (notification) {
+            io.of('main').to(`/main#${notification.mes.id}`).emit('message',  notification);
+        });
+
+        socket.on(('disconnect'), function () {
+            userService.changeStatus({id: sender, online: false});
+            socket.removeListener('connection', connection);
+            socket.disconnect();
         });
     });
-// ===== GeneralChannelEnd ========= //
+
 
 
 http.listen(8080, () => {

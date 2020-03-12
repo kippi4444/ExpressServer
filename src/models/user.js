@@ -2,7 +2,7 @@ require('dotenv').config({path: "../config.env"});
 const {Schema, model} = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-
+const Photo = require('photo');
 const user = new Schema({
     login: {
         type: String,
@@ -31,8 +31,7 @@ const user = new Schema({
         required: true
     },
     avatar: {
-        type: Schema.Types.ObjectId,
-        ref: 'Album'
+        type: Photo,
     },
     number: String,
     online: {

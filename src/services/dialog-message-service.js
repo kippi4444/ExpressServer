@@ -8,24 +8,21 @@ const ObjectId = mongoose.Types.ObjectId;
 class DialogMessageServices {
 
      static async addDialog (body) {
-        const findDialog = await Dialog.find(
-             {$or: [
+        const findDialog = await Dialog.findOne({$or: [
                         {$and: [{'person': body.person[0]}, {'person': body.person[1]}]},
                         {$and: [{'person': body.person[1]}, {'person': body.person[0]}]}
-                        ]}
-        );
-
-        if (findDialog.length>0) {
-            return findDialog[0];
+                        ]});
+        if (findDialog) {
+            return findDialog;
         }
 
         const dialog = new Dialog(body);
         await dialog.save();
+
         return dialog;
     }
 
     static async addMes (body) {
-
         const dialog = await Dialog.findOne({_id: body.dialog});
 
         if (!dialog) {
@@ -35,16 +32,19 @@ class DialogMessageServices {
         const message = new Mes(body);
         await message.save();
 
-        return message;
+        return await User.populate(message, {path: 'user'});
     }
 
     static async delDialog(id){
         await Dialog.deleteOne({_id: id.toString()});
-        return id
+        await Mes.deleteMany({dialog: ObjectId(id)});
+
+        return id;
     }
 
     static async delMes(id){
         await Mes.deleteOne({_id: id.toString()});
+
         return id
     }
 
@@ -61,7 +61,7 @@ class DialogMessageServices {
     }
 
     static async getDialogs(userId){
-     const id = ObjectId(userId);
+        const id = ObjectId(userId);
         return await Dialog.aggregate([
             {$match: { person: {$all:   [id] } }},
             { $addFields:
@@ -84,19 +84,8 @@ class DialogMessageServices {
                 }
             },
             {$unwind: "$persons" },
-            {$unset: ['person','__v', 'persons.password', 'persons.tokens', 'persons.__v', 'updatedAt']},
-            {
-                $lookup: {
-                    from: "photos",
-                    localField: 'persons.avatar',
-                    foreignField: 'album',
-                    as: "photos"
-                }
-            },
-
+            {$unset: ['person','__v', 'persons.password', 'persons.tokens', 'persons.__v', 'updatedAt']}
         ]);
-
-
     }
 
      static async getAllDialogs(){
@@ -105,7 +94,7 @@ class DialogMessageServices {
 
     static async getMessages(dialogId){
         const dialog = await Dialog.findOne({_id: ObjectId(dialogId)});
-        const mes = await Mes.find({dialog: dialogId.toString()});
+        const mes = await Mes.find({dialog: dialogId.toString()}).populate('user');
         return {mes, dialog};
     }
 

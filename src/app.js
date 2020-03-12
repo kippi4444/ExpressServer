@@ -10,7 +10,7 @@ const diologRouter = require('./routers/dialog');
 const mongoose = require('mongoose');
 const app = express();
 const Port = process.env.PORT | 8000;
-const chat = require('./chat/chat');
+
 
 
 
@@ -35,6 +35,7 @@ try {
     });
     app.listen(Port, () => {
         console.log('server on port ' + Port);
+        const chat = require('./chat/chat');
     });
 
 } catch (e) {
