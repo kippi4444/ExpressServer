@@ -29,15 +29,6 @@ class AlbumController {
         }
     };
 
-    upload = async (req, res) => {
-        try {
-
-            const result = await service.upload(req);
-            res.status(201).send(JSON.stringify(result))
-        } catch (e) {
-            res.status(400).send({error: e.message})
-        }
-    };
 
     getAlbum = async (req, res) => {
         try {

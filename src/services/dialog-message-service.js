@@ -7,19 +7,20 @@ const ObjectId = mongoose.Types.ObjectId;
 
 class DialogMessageServices {
 
-     static async addDialog (body) {
-        const findDialog = await Dialog.findOne({$or: [
-                        {$and: [{'person': body.person[0]}, {'person': body.person[1]}]},
-                        {$and: [{'person': body.person[1]}, {'person': body.person[0]}]}
-                        ]});
+    static async addDialog (req) {
+        let users = req.body.person.map(user => ObjectId(user));
+        let reverse = req.body.person.reverse().map(user => ObjectId(user));
+        const findDialog = await Dialog.findOne( {$or: [
+                      {person: users },
+                      {person: reverse}
+                             ]});
         if (findDialog) {
-            return findDialog;
+            return await this.getDialog({dialog: findDialog._id, user: req.user._id});
         }
 
-        const dialog = new Dialog(body);
+        const dialog = new Dialog(req.body);
         await dialog.save();
-
-        return dialog;
+        return await this.getDialog({dialog: dialog._id, user: req.user._id})
     }
 
     static async addMes (body) {
@@ -35,11 +36,16 @@ class DialogMessageServices {
         return await User.populate(message, {path: 'user'});
     }
 
-    static async delDialog(id){
-        await Dialog.deleteOne({_id: id.toString()});
-        await Mes.deleteMany({dialog: ObjectId(id)});
+    static async delDialog(body){
+       const dialog = await Dialog.findOne({_id: body.params.id});
+       if(dialog.person.length<3){
+           await Dialog.deleteOne({_id: body.params.id});
+           await Mes.deleteMany({dialog: ObjectId(body.params.id)});
+       } else {
+           await Dialog.findOneAndUpdate({_id: body.params.id}, { $pullAll: {person: [body.user._id] }});
+       }
 
-        return id;
+        return body.params.id;
     }
 
     static async delMes(id){
@@ -53,11 +59,61 @@ class DialogMessageServices {
     }
 
     static async editMes(body){
-        return await Mes.findOneAndUpdate({_id: body._id.toString()}, body);
+        return  await Mes.updateMany(
+            {dialog: body.dialog, isReading: {$all: [ObjectId(body.sender)]}}, { $pullAll: {isReading: [ObjectId(body.sender)] } }
+            );
     }
 
-    static async getDialog(dialogId){
-        return await Dialog.findOne({_id: dialogId.toString()});
+    static async getDialog(body){
+        return await Dialog.aggregate([
+            {$match: { _id:   ObjectId(body.dialog) } },
+            {$sort: {_id: -1}},
+            { $addFields:
+                    { persons:
+                            {$filter:
+                                    {
+                                        input: "$person", as: "id", cond:
+                                            {$ne: ["$$id", ObjectId(body.user)]}
+                                    }
+                            }
+                    }
+            },
+            {$unwind: "$persons" },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: 'persons',
+                    foreignField: '_id',
+                    as: "persons"
+                }
+            },
+            {$unwind: "$persons" },
+            {$unset: ['person','__v', 'persons.password', 'persons.tokens', 'persons.__v', 'updatedAt']},
+            {$sort: {'persons._id': -1}},
+            {"$lookup":
+                    {from: 'messages',
+                        as: 'mes',
+                        let: { indicator_id: '$_id' },
+                        pipeline: [
+                            { $match: {
+                                    $expr: { $eq: [ '$dialog', '$$indicator_id' ] }
+                                } },
+                            { $sort: {created_at: -1} },
+                            { $limit: 1}
+                        ],
+                    }
+            },
+            {
+                $group:
+                    {
+                        _id: '$_id',
+                        title: {$first: '$title'},
+                        persons: {"$push": '$persons'},
+                        mes: {"$first": "$mes"}
+                    }
+            },
+            {$sort: {mes: -1}},
+        ]);
     }
 
     static async getDialogs(userId){
@@ -84,7 +140,31 @@ class DialogMessageServices {
                 }
             },
             {$unwind: "$persons" },
-            {$unset: ['person','__v', 'persons.password', 'persons.tokens', 'persons.__v', 'updatedAt']}
+            {$unset: ['person','__v', 'persons.password', 'persons.tokens', 'persons.__v', 'updatedAt']},
+            {$sort: {'persons._id': -1}},
+            {"$lookup":
+                    {from: 'messages',
+                        as: 'mes',
+                        let: { indicator_id: '$_id' },
+                        pipeline: [
+                            { $match: {
+                                    $expr: { $eq: [ '$dialog', '$$indicator_id' ] }
+                                } },
+                            { $sort: {created_at: -1} },
+                            { $limit: 1}
+                        ],
+                    }
+            },
+            {
+                $group:
+                    {
+                        _id: '$_id',
+                        title: {$first: '$title'},
+                        persons: {"$push": '$persons'},
+                        mes: {"$first": "$mes"}
+                    }
+            },
+            {$sort: {mes: -1}},
         ]);
     }
 
@@ -92,10 +172,89 @@ class DialogMessageServices {
         return await Dialog.find({}).select('_id');
     }
 
-    static async getMessages(dialogId){
-        const dialog = await Dialog.findOne({_id: ObjectId(dialogId)});
-        const mes = await Mes.find({dialog: dialogId.toString()}).populate('user');
-        return {mes, dialog};
+    static async getMessages(dialog){
+        return await Dialog.aggregate([
+            {
+                $match: {_id: ObjectId(dialog.dialog)}
+            },
+            {
+                "$facet": {
+                    "dialog": [
+                        { "$unwind": "$person" },
+                        { "$lookup": {
+                                "from": "users",
+                                "localField": "person",
+                                "foreignField": "_id",
+                                "as": "persons"
+                            }},
+                        { "$unwind": "$persons" },
+                        {$unset: ['persons.tokens', 'persons.password']},
+                        { "$group": {
+                                "_id": "$_id",
+                                "title": {"$first": "$title"},
+                                "person": { "$push": "$person" },
+                                "persons": { "$push": "$persons" }
+                            }}
+
+                    ],
+                    "mes": [
+                        {"$lookup":
+                            {from: 'messages',
+                                as: 'mes',
+                                let: { indicator_id: '$_id' },
+                                pipeline: [
+                                    { $match: {
+                                            $expr: { $eq: [ '$dialog', '$$indicator_id' ] }
+                                        } },
+                                    { $sort: {created_at: -1} },
+                                    { $skip: dialog.skip},
+                                    { $limit: 10}
+                                ],
+                            }
+                        },
+                        { "$unwind": {path: "$mes", "preserveNullAndEmptyArrays": true }},
+                        { "$lookup": {
+                                "from": "users",
+                                "localField": "mes.user",
+                                "foreignField": "_id",
+                                "as": "mes.user"
+                            }},
+                        { "$unwind":{path: "$mes.user", "preserveNullAndEmptyArrays": true }  },
+                        {$unset: ['mes.user.tokens', 'mes.user.password']},
+                        { "$group": {
+                                "_id": "_id",
+                                "mes": { "$push": "$mes" },
+                            }
+                        },
+                        {
+                            $project: {
+                                _id: -1,
+                                mes: {
+                                    $filter: {
+                                        input: "$mes",
+                                        as: "value",
+                                        cond: {  $ne : ["$$value" , {}] }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            $project: {
+                                _id: 1,
+                                mes: { $reverseArray: '$mes' },
+                            }
+                        },
+
+                    ],
+                }
+            },
+            {$unwind: '$dialog'},
+            {$unwind: "$mes"},
+            {$replaceRoot:
+                    { newRoot: {dialog: '$dialog', mes: "$mes.mes"} }
+            }
+
+        ]);
     }
 
 }

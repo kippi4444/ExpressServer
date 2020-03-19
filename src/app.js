@@ -6,7 +6,8 @@ const petRouter = require('./routers/pet');
 const albumRouter = require('./routers/album');
 const photoRouter = require('./routers/photo');
 const friendRouter = require('./routers/friend');
-const diologRouter = require('./routers/dialog');
+const dialogRouter = require('./routers/dialog');
+const commentRouter = require('./routers/comment');
 const mongoose = require('mongoose');
 const app = express();
 const Port = process.env.PORT | 8000;
@@ -23,7 +24,8 @@ app.use('/pets', petRouter);
 app.use('/albums', albumRouter);
 app.use('/photos', photoRouter);
 app.use('/friends', friendRouter);
-app.use('/dialogs', diologRouter);
+app.use('/dialogs', dialogRouter);
+app.use('/comment', commentRouter);
 
 
 try {

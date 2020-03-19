@@ -69,4 +69,57 @@ const pet = Joi.object({
             .error((errors) => new Error('"Id owner" no valid')),
         });
 
-module.exports = {user, pet};
+const comment = Joi.object({
+
+        user: Joi.string()
+            .empty()
+            .required()
+            .error((errors) => new Error('"user ID" no valid')),
+
+        text: Joi.string()
+            .empty()
+            .required()
+            .error((errors) => new Error('"comment text" no valid')),
+
+        photo: Joi.string()
+            .empty()
+            .required()
+            .error((errors) => new Error('"ID photo" no valid')),
+});
+
+const dialog = Joi.object({
+
+        title: Joi.string()
+            .empty()
+            .allow('')
+            .allow(null)
+            .error((errors) => new Error('"text" no valid')),
+
+        person: Joi.array().items(
+            Joi.string()
+                .empty()
+                .required()
+                .error((errors) => new Error('"person" no valid'))),
+
+});
+
+const album = Joi.object({
+
+        title: Joi.string()
+            .empty()
+            .required()
+            .error((errors) => new Error('"text" no valid')),
+
+        description: Joi.string()
+                .allow('')
+                .allow(null)
+                .error((errors) => new Error('"person" no valid')),
+
+        owner: Joi.string()
+                .empty()
+                .required()
+                .error((errors) => new Error('"person" no valid')),
+
+});
+
+module.exports = {user, pet, comment, dialog, album};

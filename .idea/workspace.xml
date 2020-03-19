@@ -143,7 +143,8 @@
       <workItem from="1580971350055" duration="18852000" />
       <workItem from="1581057698248" duration="9769000" />
       <workItem from="1581317125653" duration="228834000" />
-      <workItem from="1582872917140" duration="153057000" />
+      <workItem from="1582872917140" duration="178865000" />
+      <workItem from="1584305195611" duration="76442000" />
     </task>
     <servers />
   </component>
@@ -167,16 +168,6 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/services/user-service.js</url>
-          <line>170</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="41" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="js.build_tools.npm">
         <watch expression="user._id" language="JavaScript" />

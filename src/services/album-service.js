@@ -23,7 +23,7 @@ class AlbumService {
     static async update (req){
         const album = await Album.findOneAndUpdate({_id: req.params.id}, req.body);
         const unwindAlbum = await this.getAlbum(album._id.toString());
-        return unwindAlbum[0];
+        return unwindAlbum;
     }
 
     static async del(id){
@@ -59,32 +59,65 @@ class AlbumService {
             {$unwind: "$owner"},
             {
                 $lookup: {
-                    from: "photos",
-                    localField: 'owner.avatar',
-                    foreignField: "album",
-                    as: "owner.photos"
-                }
-            },
-            {
-                $lookup: {
                     from: "albums",
                     localField: 'album',
                     foreignField: "_id",
                     as: "album"
                 }
             },
+            {$unwind: "$album"},
             {
                 $lookup: {
-                    from: "photos",
+                    from: "comments",
                     localField: '_id',
-                    foreignField: "album",
-                    as: "photos"
+                    foreignField: "photo",
+                    as: "comments"
                 }
             },
-            {$unwind: "$album"},
+
+            {$unwind: {path: "$comments", "preserveNullAndEmptyArrays": true }},
+            {
+                $lookup: {
+                    from: "users",
+                    localField: 'comments.user',
+                    foreignField: "_id",
+                    as: "comments.user"
+                }
+            },
+            {$unwind: {path: "$comments.user", "preserveNullAndEmptyArrays": true }},
+            {$unset: ['comments.user.password', 'comments.user.tokens' , 'comments.user.__v']},
+            {
+                $group: {
+                    _id : "$_id",
+                    likes: {$push: "$likes"},
+                    url: {$first: "$url"},
+                    created_at: {$first: "$created_at"},
+                    album: { $first: "$album" },
+                    owner: { $first: "$owner" },
+                    comments: { $push: "$comments" },
+                }
+            },
+            {$unwind: "$likes"},
+            {
+                $project: {
+                    _id: -1,
+                    likes: 1,
+                    url: 1,
+                    created_at: 1,
+                    album: 1,
+                    owner: 1,
+                    comments: {
+                        $filter: {
+                            input: "$comments",
+                            as: "value",
+                            cond: {  $ne : ["$$value" , {}] }
+                        }
+                    },
+                }
+            },
             {$sort: {_id: 1}},
             {$unset: ['owner.password', 'owner.tokens' , 'owner.__v']}
-        ]);
+            ]);
         const album = await Album.aggregate([
             {
                 $match: { _id: ObjectId(id) }

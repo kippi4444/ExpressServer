@@ -5,7 +5,7 @@ class DialogController {
     addDialog = async (req, res) => {
         try {
 
-            const result = await service.addDialog(req.body);
+            const result = await service.addDialog(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error:e.message})
@@ -24,7 +24,7 @@ class DialogController {
 
     deleteDialog = async (req, res) => {
         try {
-            const result = await service.delDialog(req.params.id);
+            const result = await service.delDialog(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
             res.status(400).send({error: e.message})

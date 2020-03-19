@@ -11,10 +11,11 @@ const message = new Schema ({
         ref: 'User',
         required: true
     },
-    isReading: {
-        type: Boolean,
+    isReading: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
-    },
+    }],
     text: {
         type: String,
         required: true

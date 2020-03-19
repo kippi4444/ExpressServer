@@ -76,6 +76,17 @@ class PhotoServices {
         return await this.getPhoto(photo._id) ;
     }
 
+    async addLike (body) {
+        const photo = await Photo.findOne({_id: ObjectId(body.photo._id), likes: {$all: [ObjectId(body.like._id)]}});
+        if (photo){
+            await Photo.findOneAndUpdate({_id: body.photo._id}, {$pull: {likes: body.like._id} });
+            return false
+        }
+        await Photo.findOneAndUpdate({_id: body.photo._id}, {$push: {likes: body.like._id} });
+        return true;
+
+    }
+
      async getPhoto (id) {
          return  await Photo.aggregate([
              {
@@ -127,6 +138,54 @@ class PhotoServices {
                  }
              },
              {$unwind: "$album"},
+             {
+                 $lookup: {
+                     from: "comments",
+                     localField: '_id',
+                     foreignField: "photo",
+                     as: "comments"
+                 }
+             },
+             {$unwind: {path: "$comments", "preserveNullAndEmptyArrays": true }},
+             {
+                 $lookup: {
+                     from: "users",
+                     localField: 'comments.user',
+                     foreignField: "_id",
+                     as: "comments.user"
+                 }
+             },
+             {$unwind: {path: "$comments.user", "preserveNullAndEmptyArrays": true }},
+             {$unset: ['comments.user.password', 'comments.user.tokens' , 'comments.user.__v']},
+             {
+                 $group: {
+                     _id : "$_id",
+                     likes: {$first: "$likes"},
+                     url: {$first: "$url"},
+                     created_at: {$first: "$created_at"},
+                     album: { $first: "$album" },
+                     owner: { $first: "$owner" },
+                     comments: { $push: "$comments" },
+                 }
+             },
+             {
+                 $project: {
+                     _id: -1,
+                     likes: 1,
+                     url: 1,
+                     created_at: 1,
+                     album: 1,
+                     owner: 1,
+                     comments: {
+                         $filter: {
+                             input: "$comments",
+                             as: "value",
+                             cond: {  $ne : ["$$value" , {}] }
+                         }
+                     },
+                 }
+             },
+
              {$sort: {_id: -1}},
              {$unset: ['owner.password', 'owner.tokens' , 'owner.__v']}
          ]);
