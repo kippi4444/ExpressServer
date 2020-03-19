@@ -5,7 +5,7 @@ const valid = function  (schema) {
             next();
         }
         catch (err) {
-            res.status(400).send({Error: err.message});
+            res.status(400).send(err.message);
         }
     }
 };

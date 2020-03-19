@@ -7,7 +7,7 @@ class AlbumController {
             const result = await service.add(req.body);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -16,7 +16,7 @@ class AlbumController {
             const result = await service.del(req.params.id);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -25,7 +25,7 @@ class AlbumController {
             const result = await service.update(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -36,7 +36,7 @@ class AlbumController {
             const result = await service.getAlbum(req.params.id);
             res.send(result)
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -45,7 +45,7 @@ class AlbumController {
             const result = await service.getAllAlbums(req.params.id);
             res.send(result);
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 

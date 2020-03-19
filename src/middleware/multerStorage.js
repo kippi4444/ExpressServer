@@ -22,8 +22,5 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// const avatar = multer({storage:storageConfig}).single('avatar');
-// const album = multer({storage:storageConfig}).single('album');
-// multer({storage:storageConfig}).single('filedata');
 module.exports = {storageConfig, fileFilter};
 

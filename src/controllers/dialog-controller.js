@@ -8,7 +8,7 @@ class DialogController {
             const result = await service.addDialog(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -18,7 +18,7 @@ class DialogController {
             const result = await service.addMes(req.body);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -27,7 +27,7 @@ class DialogController {
             const result = await service.delDialog(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -36,7 +36,7 @@ class DialogController {
             const result = await service.delMes(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -46,7 +46,7 @@ class DialogController {
             const result = await service.editDialog(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -56,7 +56,7 @@ class DialogController {
             const result = await service.editMes(req.params.id);
             res.send(result)
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -65,7 +65,7 @@ class DialogController {
             const result = await service.getDialog(req.params.id);
             res.send(result);
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -74,7 +74,7 @@ class DialogController {
             const result = await service.getDialogs(req.user._id);
             res.send(result);
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -83,7 +83,7 @@ class DialogController {
             const result = await service.getMessages(req.params.id);
             res.send(result);
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 

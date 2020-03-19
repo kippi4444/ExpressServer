@@ -7,7 +7,7 @@ class FriendController {
             const result = await service.add(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -16,7 +16,7 @@ class FriendController {
             const result = await service.delReq(req.params.id);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -25,7 +25,7 @@ class FriendController {
             const result = await service.delFriend(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -34,7 +34,7 @@ class FriendController {
             const result = await service.getAllReq(req.user);
             res.send(result)
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -43,7 +43,7 @@ class FriendController {
             const result = await service.getAllFriends(req.params.id);
             res.send(result);
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 

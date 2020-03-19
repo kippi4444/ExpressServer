@@ -7,7 +7,7 @@ class PhotoController {
             const result = await service.add(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -16,7 +16,7 @@ class PhotoController {
             const result = await service.addWallPhoto(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -26,7 +26,7 @@ class PhotoController {
             const result = await service.setAvatarUsers(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -35,7 +35,7 @@ class PhotoController {
             const result = await service.changeAvatarUser(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -45,7 +45,7 @@ class PhotoController {
             const result = await service.del(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -54,7 +54,7 @@ class PhotoController {
             const result = await service.updPhoto(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -64,7 +64,7 @@ class PhotoController {
             const result = await service.getPhoto(req.params.id);
             res.send(result)
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send(e.message)
         }
     };
 
@@ -73,7 +73,7 @@ class PhotoController {
             const result = await service.getAllPhotos(req.params.id);
             res.send(result);
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 

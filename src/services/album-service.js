@@ -97,7 +97,7 @@ class AlbumService {
                     comments: { $push: "$comments" },
                 }
             },
-            {$unwind: "$likes"},
+            {$unwind: {path:  "$likes", "preserveNullAndEmptyArrays": true }},
             {
                 $project: {
                     _id: -1,

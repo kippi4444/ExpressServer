@@ -12,7 +12,7 @@ const user = new Schema({
     password: {
         type: String,
         required: true,
-        minlength: 7,
+        minlength: 6,
         trim: true
     },
     birthday: {
@@ -60,11 +60,11 @@ user.methods.generateAuthToken = async function () {
 user.statics.findByCredentials = async (login, password) => {
     const user = await User.findOne({login});
     if (!user) {
-        throw new Error('Unable user');
+        throw new Error('User not found');
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        throw new Error('Unable to login');
+        throw new Error('Wrong password ');
     }
     return user
 };

@@ -7,7 +7,7 @@ class UserController {
             const result = await service.add(req.body);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -16,7 +16,7 @@ class UserController {
             const result = await service.del(req);
             res.status(201).send(JSON.stringify(result))
         } catch (e) {
-            res.status(400).send({error: e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -25,7 +25,7 @@ class UserController {
             const result = await service.update(req);
             res.status(201).send(result)
         } catch (e) {
-            res.status(400).send({error: e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -34,7 +34,7 @@ class UserController {
             const result = await service.updateByAdmin(req);
             res.status(201).send(result)
         } catch (e) {
-            res.status(400).send({error: e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -43,7 +43,7 @@ class UserController {
             const result = await service.getUser(req);
             res.send(result)
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -52,7 +52,7 @@ class UserController {
             const result = await service.getAllUsers(req);
             res.send(result)
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -61,7 +61,7 @@ class UserController {
             const result = await service.getUserAll(req.params.id);
             res.send(result)
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -70,7 +70,7 @@ class UserController {
             const result = await service.getUserAll(req.user.login);
             res.send(result)
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 
@@ -79,7 +79,7 @@ class UserController {
             const result = await service.login(req.body.login, req.body.password);
             res.send(result)
         } catch (e) {
-            res.status(400).send({error:e.message});
+            res.status(400).send(e.message);
         }
     };
 
