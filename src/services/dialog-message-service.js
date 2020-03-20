@@ -180,50 +180,61 @@ class DialogMessageServices {
             {
                 "$facet": {
                     "dialog": [
-                        { "$unwind": "$person" },
-                        { "$lookup": {
+                        {"$unwind": "$person"},
+                        {
+                            "$lookup": {
                                 "from": "users",
                                 "localField": "person",
                                 "foreignField": "_id",
                                 "as": "persons"
-                            }},
-                        { "$unwind": "$persons" },
+                            }
+                        },
+                        {"$unwind": "$persons"},
                         {$unset: ['persons.tokens', 'persons.password']},
-                        { "$group": {
+                        {
+                            "$group": {
                                 "_id": "$_id",
                                 "title": {"$first": "$title"},
-                                "person": { "$push": "$person" },
-                                "persons": { "$push": "$persons" }
-                            }}
+                                "person": {"$push": "$person"},
+                                "persons": {"$push": "$persons"}
+                            }
+                        }
 
                     ],
                     "mes": [
-                        {"$lookup":
-                            {from: 'messages',
-                                as: 'mes',
-                                let: { indicator_id: '$_id' },
-                                pipeline: [
-                                    { $match: {
-                                            $expr: { $eq: [ '$dialog', '$$indicator_id' ] }
-                                        } },
-                                    { $sort: {created_at: -1} },
-                                    { $skip: dialog.skip},
-                                    { $limit: 10}
-                                ],
-                            }
+                        {
+                            "$lookup":
+                                {
+                                    from: 'messages',
+                                    as: 'mes',
+                                    let: {indicator_id: '$_id'},
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {$eq: ['$dialog', '$$indicator_id']}
+                                            }
+                                        },
+                                        {$sort: {created_at: -1}},
+                                        {$skip: dialog.skip},
+                                        {$limit: 10}
+                                    ],
+                                }
                         },
-                        { "$unwind": {path: "$mes", "preserveNullAndEmptyArrays": true }},
-                        { "$lookup": {
+                        {"$unwind": {path: "$mes", "preserveNullAndEmptyArrays": true}},
+                        {
+                            "$lookup": {
                                 "from": "users",
                                 "localField": "mes.user",
                                 "foreignField": "_id",
                                 "as": "mes.user"
-                            }},
-                        { "$unwind":{path: "$mes.user", "preserveNullAndEmptyArrays": true }  },
+                            }
+                        },
+                        {"$unwind": {path: "$mes.user", "preserveNullAndEmptyArrays": true}},
                         {$unset: ['mes.user.tokens', 'mes.user.password']},
-                        { "$group": {
+                        {
+                            "$group": {
                                 "_id": "_id",
-                                "mes": { "$push": "$mes" },
+                                "mes": {"$push": "$mes"},
                             }
                         },
                         {
@@ -233,7 +244,7 @@ class DialogMessageServices {
                                     $filter: {
                                         input: "$mes",
                                         as: "value",
-                                        cond: {  $ne : ["$$value" , {}] }
+                                        cond: {$ne: ["$$value", {}]}
                                     }
                                 }
                             }
@@ -241,8 +252,27 @@ class DialogMessageServices {
                         {
                             $project: {
                                 _id: 1,
-                                mes: { $reverseArray: '$mes' },
+                                mes: {$reverseArray: '$mes'},
                             }
+                        },
+
+                    ],
+                    "totalCount": [
+                        {
+                            "$lookup":
+                                {
+                                    from: 'messages',
+                                    as: 'mes',
+                                    let: {indicator_id: '$_id'},
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {$eq: ['$dialog', '$$indicator_id']}
+                                            }
+                                        },
+                                        {"$count": "count"}
+                                    ],
+                                }
                         },
 
                     ],
@@ -250,9 +280,13 @@ class DialogMessageServices {
             },
             {$unwind: '$dialog'},
             {$unwind: "$mes"},
+            {$unwind: "$totalCount"},
             {$replaceRoot:
-                    { newRoot: {dialog: '$dialog', mes: "$mes.mes"} }
-            }
+                    { newRoot:
+                            {dialog: '$dialog', mes: "$mes.mes", count: "$totalCount.mes"}
+                    }
+            },
+
 
         ]);
     }
