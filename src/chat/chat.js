@@ -6,6 +6,17 @@ const dialogService = require('../services/dialog-message-service');
 const userService = require('../services/user-service');
 const photoService = require('../services/photo-service');
 require('events').EventEmitter.defaultMaxListeners = 25;
+const emitNotification = require('./emiterNotifications');
+
+emitNotification.on(('newFriend'), function (notification) {
+    io.to(`${notification.mes.id}`).emit('message',  notification);
+});
+emitNotification.on(('delFriend'), function (notification) {
+    io.to(`${notification.mes.id}`).emit('message',  notification);
+});
+emitNotification.on(('newReq'), function (notification) {
+    io.to(`${notification.mes.id}`).emit('message',  notification);
+});
 
 async function start() {
 
@@ -21,6 +32,7 @@ io.use(function(socket, next) {
         next(new Error('WRONG SOCKET'));
     }
 });
+
 
 io.on('connection', function connection(socket) {
         const sender = socket.handshake.query.sender;
@@ -119,6 +131,7 @@ io.on('connection', function connection(socket) {
         socket.on(('notification'), function (notification) {
             io.to(`${notification.mes.id}`).emit('message',  notification);
         });
+
         socket.on(('disconnect'), function () {
             userService.changeStatus({id: sender, online: false});
             socket.removeListener('connection', connection);

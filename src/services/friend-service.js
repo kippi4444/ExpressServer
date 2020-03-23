@@ -1,6 +1,7 @@
 const Friend = require('../models/friend');
 const Request = require('../models/friendRequest');
 const User = require('../models/user');
+const emitNotification = require('../chat/emiterNotifications');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -21,6 +22,7 @@ class FriendServices {
         if (!friendRequest){
             const reqForFriends = new Request({friend: req.body.friend , owner: req.body.owner });
             await  reqForFriends.save();
+            emitNotification.emit('newReq', {event: 'newReq', mes: {id: req.body.owner}});
             return reqForFriends;
         } else if(friendRequest.friend.toString() === req.user._id.toString()) {
             throw new Error("Request send!");
@@ -29,6 +31,7 @@ class FriendServices {
             const ownerFriend = new Friend({friend: req.body.owner, owner: req.body.friend });
             await friend.save();
             await ownerFriend.save();
+            emitNotification.emit('newFriend', {event: 'newFriend', mes: {id: req.body.owner}});
             await this.delReq(friendRequest._id);
             return  friend;
         }
@@ -36,12 +39,14 @@ class FriendServices {
 
     async delReq(id){
         await Request.deleteOne({_id: ObjectId(id)});
+
         return id
     }
 
     async delFriend(req){
         await Friend.deleteOne({owner: req.params.id.toString(), friend: req.user._id.toString()});
         await Friend.deleteOne({friend: req.params.id.toString(), owner: req.user._id.toString()});
+        emitNotification.emit('delFriend', {event: 'delFriend', mes: {id: req.params.id}});
         return {friend: req.params.id, auth: req.user._id}
     }
 
