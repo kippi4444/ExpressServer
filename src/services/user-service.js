@@ -14,14 +14,14 @@ class UserServices {
         await user.save();
         await fs.ensureDir(`public/${user._id}`);
         const token = await user.generateAuthToken();
-        await AlbumService.add({title: 'Фотографии с профиля', description: '', owner: user.id});
+        const avatarAlbum = await AlbumService.add({title: 'Фотографии с профиля', description: '', owner: user.id});
         await AlbumService.add({title: 'Фотографии со стены', description: '', owner: user.id});
         fs.copyFile('public/NoAvatar.jpg', `${__dirname}`+`../../../public/${user._id}/NoAvatar.jpg`,
             (err) => {if (err) return console.error(err);}
             );
         const startPhoto = {
             url: `files/${user._id}/NoAvatar.jpg`,
-            album: user.avatar,
+            album: avatarAlbum,
             owner: user._id,
         };
         const photo = new Photo (startPhoto);
